@@ -1,23 +1,20 @@
 import java.util.List;
+import java.io.*;
 import java.util.ArrayList;
+    public class Library extends LibraryItem {
+        private final String filename;
+        private final List<LibraryItem> items = new ArrayList<>();
 
-public class Library extends LibraryItem {
-    private int nextItemID = 1;
-    private List<LibraryItem> items;
+        public Library(String filename) {
+            super(filename);
+            this.filename = filename;
+            loadItemsFromFile();
+        }
 
-    public Library(String author, String title, int itemID) {
-        super(author, title, itemID);
-        items = new ArrayList<>();
-    }
-
-    //method to add items into the Library
-    public void addItem(LibraryItem item){
-        items.add(item);
-        System.out.println("Item has been added to the library!");
-    }
-    public int generateUniqueItemId(){
-        return nextItemID;
-    }
+        @Override
+        public String toFileString() {
+            return "Book," + getAuthor() + "," + getTitle() + "," + getItemID();
+        }
     //Method to display all the items in the library
     public void displayItems(){
         System.out.println("Library Items: ");
@@ -38,14 +35,38 @@ public class Library extends LibraryItem {
             System.out.println("Item not found in the library, Whee!");
         }
     }
-
-    @Override
-    public void displayInfo() {
-
-    }
-
-    @Override
-    public void getType() {
-
-    }
+        public void loadItemsFromFile() {
+            try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    LibraryItem newItem = LibraryItem.fromFileString(line);
+                    if (newItem != null) {
+                        items.add(newItem);
+                    }
+                }
+            } catch (IOException e) {
+                System.out.println("Error reading from file: " + e.getMessage());
+            }
+        }
+        public void saveItemsToFile(String filename) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+                for (LibraryItem item : items) {
+                    String fileString = item.toFileString();
+                    if (fileString != null) {
+                        writer.write(fileString);
+                        writer.newLine();
+                    }
+                }
+            } catch (IOException e) {
+                System.out.println("Error writing to file: " + e.getMessage());
+            }
+        }
+        //method to add items into the Library
+        public void addItem(LibraryItem item){
+            items.add(item);
+            System.out.println("Item has been added to the library!");
+        }
+        @Override
+        public void displayInfo() {
+        }
 }

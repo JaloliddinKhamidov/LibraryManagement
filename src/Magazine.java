@@ -1,17 +1,15 @@
 public class Magazine extends LibraryItem{
-    private int issueNumber;
-    public Magazine(String author, String title, int itemID, int issueNumber) {
+    public Magazine(String author, String title, int itemID) {
         super(author, title, itemID);
-        this.issueNumber = issueNumber;
     }
 
+    @Override
+    public String toFileString() {
+        return "Magazine, " + getAuthor() + ", " + getTitle() + ", " + getItemID();
+    }
     @Override
     public void displayInfo(){
         System.out.println("Magazine: " + getTitle() + " by " + getAuthor() +
-                " (ID: " + getItemID() + ", Issue: " + issueNumber + ")");
-    }
-    @Override
-    public void getType(){
-
+                " (ID: " + getItemID() +")");
     }
 }

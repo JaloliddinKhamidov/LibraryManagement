@@ -1,0 +1,4 @@
+Book, Manguberdi,MenBuMen,1
+Book, Jaloliddin,Rumiy Asari,2
+Book, James Bond,Crime Times,1
+Magazine, New York Times,Fuck Israel!, 2
